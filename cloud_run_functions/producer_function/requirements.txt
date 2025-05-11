@@ -1,0 +1,6 @@
+pandas
+google-cloud-pubsub
+google-api-core
+protobuf
+google-cloud-storage
+functions-framework==3.*
