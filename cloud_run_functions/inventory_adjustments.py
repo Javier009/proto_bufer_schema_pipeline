@@ -3,14 +3,14 @@ import random
 import string
 import datetime
 import io
-
+import functions_framework
 from google.cloud import storage
 
-def generate_random_records_df(number_of_records=random.randint(100,1000)):
+def generate_random_records_df(number_of_records=random.randint(1000,10000)):
 
     item_id_list = [ ''.join([random.choice(string.ascii_letters) for i in range(5)]).lower() + str(random.randint(100,999)) for i in range(number_of_records) ]
     item_name_list = [ random.choice([f'Item_{i}' for i in range(1,20)]) for i in range(number_of_records) ]
-    quantity_change_list = [random.randint(1,100) for i in range(number_of_records)  ]
+    quantity_change_list = [ random.randint(1,100) for i in range(number_of_records)  ]
     current_stock_list = [random.randint(1,10000) for i in range(number_of_records)  ]
     location_list = [ random.choice([f'Location_{i}' for i in range(1,20)]) for i in range(number_of_records) ]
     event_time_list = [ datetime.date.today().isoformat() for i in range(number_of_records) ]
@@ -25,23 +25,28 @@ def generate_random_records_df(number_of_records=random.randint(100,1000)):
                     }
     
     records_df = pd.DataFrame(records_dict)
+
     return records_df
 
-def send_data_gcs(bucket_name='inventory_bucker', file_name=f'inventory_adjustements'):
-    data = generate_random_records_df()
+def send_data_gcs(data, bucket_name='inventory_bucker', file_name=f'inventory_adjustments'):
     gcs_uri = f'gs://{bucket_name}/{file_name}.csv'
-
+    
     try:
-        data.to_csv(gcs_uri, index=False) 
+        data.to_csv(gcs_uri,index=False) 
         print(f"DataFrame successfully uploaded to: {gcs_uri}")
         return True
     except Exception as e:
         print(f"Error uploading DataFrame to GCS: {e}")
         return False
 
+def main(request):
+    data = generate_random_records_df()
+    send_data_gcs(data)
+    return 'Inventroy Adj. Data succesfully sent to GCS', 200
 
-# if __name__ == '__main__':
-#     send_data_gcs()
+
+
+
 # 1) See if data exists in Cloud Storage if not create a new data frame and Store a CSV in Cloud storage
 # bucket_name = 'inventory_bucker'
 # file_path = 'my_data.csv'
