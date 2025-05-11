@@ -12,8 +12,6 @@ import functions_framework
 # from utilities import us_states_pb2
 from utilities import inventory_event_pb2
 
-
-
 PROJECT_ID  = "real-time-data-pipeline-457520"
 TOPIC_ID = "inventory-topic"
 

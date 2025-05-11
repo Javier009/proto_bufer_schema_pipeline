@@ -6,7 +6,7 @@ import io
 import functions_framework
 # from google.cloud import storage
 
-def generate_random_records_df(number_of_records=random.randint(1000,10000)):
+def generate_random_records_df(number_of_records=random.randint(100,500)):
 
     item_id_list = [ ''.join([random.choice(string.ascii_letters) for i in range(5)]).lower() + str(random.randint(100,999)) for i in range(number_of_records) ]
     item_name_list = [ random.choice([f'Item_{i}' for i in range(1,20)]) for i in range(number_of_records) ]
