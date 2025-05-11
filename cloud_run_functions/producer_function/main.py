@@ -1,6 +1,6 @@
 import io
 import pandas as pd
-
+import time
 from google.api_core.exceptions import NotFound
 from google.cloud.pubsub import PublisherClient, SchemaServiceClient
 from google.pubsub_v1.types.schema import Schema, Encoding, GetSchemaRequest, SchemaView
@@ -11,6 +11,9 @@ import functions_framework
 
 # from utilities import us_states_pb2
 from utilities import inventory_event_pb2
+
+#Give some time for the data to land in GCS
+time.sleep(10)
 
 PROJECT_ID  = "real-time-data-pipeline-457520"
 TOPIC_ID = "inventory-topic"
@@ -29,7 +32,7 @@ schema = schema_client.get_schema(request=request)
 
 # Fetch data from inventroy adjustments bucket(r) -- > TYPO
 bucket_name = 'inventory_bucker'
-file_path = 'inventory_adjustments.csv'
+file_path = 'inventory_adjustments.csv' 
 storage_client = storage.Client()
 bucket = storage_client.bucket(bucket_name)
 blob = bucket.blob(file_path)
