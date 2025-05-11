@@ -4,7 +4,7 @@ import string
 import datetime
 import io
 import functions_framework
-from google.cloud import storage
+# from google.cloud import storage
 
 def generate_random_records_df(number_of_records=random.randint(1000,10000)):
 
